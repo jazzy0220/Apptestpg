@@ -56,8 +56,9 @@ pool.query(sql_insert, [], (err, result) => {
     });
 });
 
-app.listen(3000, () => {
-  console.log("Server started (http://localhost:3000/) !");
+// Start listener
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Server started (http://localhost:3000/) !");
 });
 
 app.get("/", (req, res) => { 
