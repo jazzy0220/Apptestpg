@@ -112,3 +112,47 @@ app.post("/edit/:id", (req, res) => {
     res.redirect("/books");
     });
 });
+
+// GET /create
+app.get("/create", (req, res) => {
+    const book = {
+      Author: "Victor Hugo"
+    }
+    res.render("create", { model: book });
+});
+
+// POST /create
+app.post("/create", (req, res) => {
+    const sql = "INSERT INTO Books (Title, Author, Comments) VALUES ($1, $2, $3)";
+    const book = [req.body.Title, req.body.Author, req.body.Comments];
+    pool.query(sql, book, (err, result) => {
+    if (err) {
+        return console.error(err.message);
+    }
+      res.redirect("/books");
+    });
+});
+
+// GET /delete/5
+app.get("/delete/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM Books WHERE Book_ID = $1";
+    pool.query(sql, [id], (err, result) => {
+    if (err) {
+        return console.error(err.message);
+    }
+      res.render("delete", { model: result.rows[0] });
+    });
+});
+
+// POST /delete/5
+app.post("/delete/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM Books WHERE Book_ID = $1";
+    pool.query(sql, [id], (err, result) => {
+    if (err) {
+        return console.error(err.message);
+    }
+      res.redirect("/books");
+    });
+});
